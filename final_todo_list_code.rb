@@ -46,6 +46,7 @@ end
 
 class TodoList
   attr_accessor :title
+  attr_reader :todos
 
   def initialize(title)
     @title = title
@@ -85,11 +86,11 @@ class TodoList
   end
 
   def mark_done_at(num)
-    todos[num].done!
+    todos.fetch(num).done!
   end
 
   def mark_undone_at(num)
-    todos[num].undone!
+    todos.fetch(num).undone!
   end
 
   def done!
@@ -105,15 +106,14 @@ class TodoList
   end
 
   def remove_at(num)
+    todos.fetch(num)
     todos.delete_at(num)
   end
 
   def to_s
-    puts "---- Today's Todos ----"
-    todos.each do |item|
-      puts item.to_s
-    end
-    ""
+    text = "---- #{title} ----\n"
+    text << @todos.map(&:to_s).join("\n")
+    text
   end
 
   def each(&block)
@@ -166,10 +166,6 @@ class TodoList
     end
   end
 
-
-  protected
-
-  attr_reader :todos
 end
 
 =begin
